@@ -70,12 +70,12 @@ public class Screen extends JFrame  {
 					buildURL.append(value + "+");
 				}
 				String viewURL = buildURL.toString();
-				System.out.println(viewURL);
+				//System.out.println(viewURL);
 				
 				//get user's desktop
 				Desktop userDesktop = Desktop.getDesktop();
 				String userLink = ("http://lmgtfy.com/?q=" + viewURL);
-				System.out.println(userLink);
+				//System.out.println(userLink);
 				
 				try {
 					userDesktop.browse(new URI(userLink));
