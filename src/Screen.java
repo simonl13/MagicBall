@@ -8,15 +8,17 @@ import java.net.URI;
 import java.net.URISyntaxException;
 public class Screen extends JFrame  {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2749515572946309872L;
+	//sets the window size in pixels.
 	private static final int WIDTH = 600;
 	private static final int HEIGHT = 550;
-	  //we will be logging answers in arrayList 
-	static String question;
+	//we will be logging answers in arrayList 
+	static String question; //declare question
+	String[] questionWords;
+	StringBuilder buildURL = new StringBuilder;
+	String viewURL;
+	String userLink;
 	
+	//declaring GUI variables
 	private static JLabel text;
 	private JLabel imageField;
 	private JFrame frame;
@@ -55,27 +57,33 @@ public class Screen extends JFrame  {
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				String question = (String)JOptionPane.showInputDialog(frame, "Ask the Magical Ball your question.", "The Question", JOptionPane.PLAIN_MESSAGE);
+				question = (String)JOptionPane.showInputDialog(frame, "Ask the Magical Ball your question.", "The Question", JOptionPane.PLAIN_MESSAGE);
+				//creates a pane with the question and an action box
 				
 				//splits a sentence into separate words stored into an array
-				String[] questionWords = question.split("\\s+");
+				//in order to filter non-alphanumeric characters and spaces
+				questionWords = question.split("\\s+");
 				
 				//replace any non-alphabetical characters, since Google sanitizes them before searching.
 				for (int i = 0; i < questionWords.length; i++) {
 					questionWords[i] = questionWords[i].replaceAll("[^a-zA-Z0-9 ]", "");
 				}
 				
-				StringBuilder buildURL = new StringBuilder();
+				//Creates the search parameters with the search after filter
+				//Uses StringBuilder to append each word with a "+"
 				for (String value : questionWords) {
 					buildURL.append(value + "+");
 				}
-				String viewURL = buildURL.toString();
+				
+				//turns the StringBuilder into a String
+				viewURL = buildURL.toString();
 				//System.out.println(viewURL);
 				
-				//get user's desktop
+				//get user's main browser to open the link
 				Desktop userDesktop = Desktop.getDesktop();
-				String userLink = ("http://lmgtfy.com/?q=" + viewURL);
-				//System.out.println(userLink);
+				//creates the link using viewURL and tacks on a LMGTFY link.
+				userLink = ("http://lmgtfy.com/?q=" + viewURL);
+				//System.out.println(userLink); (for debug purposes)
 				
 				try {
 					userDesktop.browse(new URI(userLink));
@@ -86,7 +94,7 @@ public class Screen extends JFrame  {
 				
 			}
 		});
-		//layout		
+		//layout GUI setup stuff.		
 		JPanel masterPanel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		imageField.setAlignmentX(Component.CENTER_ALIGNMENT); //this centers our image... looks nice :)
@@ -114,8 +122,5 @@ public class Screen extends JFrame  {
 	public static void main(String[] args) {
 		@SuppressWarnings("unused")
 		Screen game = new Screen();
-		
 	}
-	
-	
 }
